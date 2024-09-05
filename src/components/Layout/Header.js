@@ -9,12 +9,12 @@ const Header = () => {
       <nav>
         <ul className="flex space-x-4">
           <li>
-            <Link href="/">
+            <Link href="/" legacyBehavior>
               <a className="hover:text-gray-400">Home</a>
             </Link>
           </li>
           <li>
-            <Link href="/game">
+            <Link href="/game" legacyBehavior>
               <a className="hover:text-gray-400">Game</a>
             </Link>
           </li>
