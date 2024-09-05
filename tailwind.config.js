@@ -1,17 +1,13 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
-    "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/**/*.{js,ts,jsx,tsx}",  // Scan all JS/TS/JSX/TSX files in the src directory
+    "./components/**/*.{js,ts,jsx,tsx}", // Scan all JS/TS/JSX/TSX files in the components directory
+    "./pages/**/*.{js,ts,jsx,tsx}", // Scan all JS/TS/JSX/TSX files in the pages directory
+    "./public/**/*.{html,js}", // Optionally include public HTML and JS files
   ],
   theme: {
-    extend: {
-      colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
-      },
-    },
+    extend: {},
   },
   plugins: [],
 };
