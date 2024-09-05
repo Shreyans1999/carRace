@@ -1,7 +1,8 @@
 // src/components/Game/Game.js
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Scene from './Scene';
-import { supabase } from '../lib/supabaseClient'; // Import Supabase client
+import FallingObjects from './FallingObjects'; // Import the FallingObjects component
+import { supabase } from '../../lib/supabaseClient';
 
 const Game = () => {
   const [score, setScore] = useState(0);
@@ -19,14 +20,21 @@ const Game = () => {
     }
   };
 
-  // Example of how to use saveScore (you should call this when the game ends)
+  // Increment score based on survival time or objects avoided
+  useEffect(() => {
+    const interval = setInterval(() => setScore(prev => prev + 1), 1000); // Increase score every second
+    return () => clearInterval(interval);
+  }, []);
+
   const handleGameEnd = () => {
     saveScore(score);
+    alert(`Game Over! Your score is: ${score}`);
   };
 
   return (
     <div className="relative h-screen w-screen">
       <Scene />
+      <FallingObjects onCollision={handleGameEnd} /> {/* Add FallingObjects component here */}
       <div className="absolute top-0 left-0 p-4">
         <h1 className="text-3xl font-bold text-white">Vehicle Game</h1>
         {/* Display score and call handleGameEnd when needed */}

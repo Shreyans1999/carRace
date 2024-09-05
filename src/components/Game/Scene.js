@@ -1,26 +1,24 @@
 // src/components/Game/Scene.js
 import React from 'react';
 import { Canvas } from '@react-three/fiber';
-import { OrbitControls, Plane } from '@react-three/drei';
+import { Physics } from '@react-three/cannon';
+import FallingObjects from './FallingObjects';
 import Vehicle from './Vehicle';
-import * as THREE from 'three';
-
-const BackgroundPlane = () => {
-  const texture = new THREE.TextureLoader().load('https://images.pexels.com/photos/1260727/pexels-photo-1260727.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'); // URL of the background image
-
-  return (
-    <Plane args={[100, 100]} position={[0, 0, -10]}>
-      <meshStandardMaterial attach="material" map={texture} />
-    </Plane>
-  );
-};
+import { OrbitControls } from '@react-three/drei';
 
 const Scene = () => {
   return (
     <Canvas>
+      <ambientLight intensity={0.5} />
+      <directionalLight position={[10, 10, 5]} intensity={1} />
+      
+      {/* Physics world */}
+      <Physics gravity={[0, -9.81, 0]}>
+        <FallingObjects />
+        <Vehicle />
+      </Physics>
+
       <OrbitControls />
-      <BackgroundPlane />
-      <Vehicle />
     </Canvas>
   );
 };

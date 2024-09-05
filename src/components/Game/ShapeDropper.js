@@ -1,8 +1,7 @@
 // src/components/Game/ShapeDropper.js
 import React, { useState, useEffect } from 'react';
-import { useFrame } from '@react-three/fiber';
 import { Box, Sphere, Cone } from '@react-three/drei';
-import { useDrop, useSphere, useBox, useCone } from '@react-three/cannon';
+import { useDrop } from '@react-three/cannon';
 
 const Shape = ({ type, size, position, mass, onCollide }) => {
   let [ref] = useDrop(() => ({
@@ -33,17 +32,20 @@ const Shape = ({ type, size, position, mass, onCollide }) => {
 const ShapeDropper = () => {
   const [shapes, setShapes] = useState([]);
 
+  // Function to generate random speed for falling objects
+  const randomSpeed = () => Math.random() * 2 + 1;
+
   useEffect(() => {
     const interval = setInterval(() => {
       const shapeType = ['box', 'sphere', 'cone'][Math.floor(Math.random() * 3)];
       const size = Math.random() * 1 + 0.5; // Random size between 0.5 and 1.5
-      const mass = Math.random() * 2 + 1; // Random mass between 1 and 3
+      const mass = randomSpeed(); // Add random speed for more variety
 
       setShapes(prevShapes => [
         ...prevShapes,
         { type: shapeType, size, mass, position: [Math.random() * 10 - 5, 10, Math.random() * 10 - 5] }
       ]);
-    }, 2000); // Drop a shape every 2 seconds
+    }, 1000); // Faster dropping to increase difficulty
 
     return () => clearInterval(interval);
   }, []);

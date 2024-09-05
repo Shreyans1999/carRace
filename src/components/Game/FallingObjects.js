@@ -1,21 +1,24 @@
 // src/components/Game/FallingObjects.js
+
 import React, { useState, useEffect } from 'react';
-import { useFrame } from '@react-three/fiber';
 import { useBox } from '@react-three/cannon';
-import { Box, Sphere, Pyramid } from '@react-three/drei';
+import { Box, Sphere, Cone } from '@react-three/drei';
 
 const shapes = [
   { component: Box, args: [1, 1, 1], color: 'red' },
   { component: Sphere, args: [0.5, 32, 32], color: 'green' },
-  { component: Pyramid, args: [1, 1, 1], color: 'blue' }
+  { component: Cone, args: [0.5, 1, 32], color: 'blue' },
 ];
 
-const FallingObject = ({ position }) => {
+const FallingObject = ({ position, onCollide }) => {
   const [ref] = useBox(() => ({
     mass: 1,
     position,
     angularVelocity: [0, 0, 0],
     linearVelocity: [0, 0, -1],
+    onCollide: () => {
+      if (onCollide) onCollide();
+    },
   }));
 
   const shape = shapes[Math.floor(Math.random() * shapes.length)];
@@ -28,7 +31,7 @@ const FallingObject = ({ position }) => {
   );
 };
 
-const FallingObjects = () => {
+const FallingObjects = ({ onCollision }) => {
   const [objects, setObjects] = useState([]);
 
   useEffect(() => {
@@ -42,10 +45,14 @@ const FallingObjects = () => {
     return () => clearInterval(interval);
   }, []);
 
+  const handleCollision = () => {
+    onCollision();
+  };
+
   return (
     <>
       {objects.map((pos, index) => (
-        <FallingObject key={index} position={[pos.x, pos.y, pos.z]} />
+        <FallingObject key={index} position={[pos.x, pos.y, pos.z]} onCollide={handleCollision} />
       ))}
     </>
   );
